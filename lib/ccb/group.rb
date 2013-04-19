@@ -3,7 +3,11 @@ module CCB
     attr_accessor :id, :name, :membership_type, :description, :address, :public_search_listed, :listed, :meeting_day, :meeting_time, :image, :campus, :calendar_feed, :created, :modified, :inactive, :group_capacity, :area, :department, :leader, :coach, :director, :participants, :current_members, :group_type, :creator, :modifier, :notification, :interraction_type, :addresses, :childcare_provided, :interaction_type, :leaders, :main_leader, :registration_forms, :user_defined_fields
 
     SRV = {
+<<<<<<< HEAD
       :profiles => "group_profiles",
+=======
+      :search => "group_search",
+>>>>>>> c1a30e60c22f331cfc5daad12bb51cabb9e85a70
       :create => "create_group"
     } unless defined? SRV
 
@@ -30,12 +34,18 @@ module CCB
     end
 
     def self.create(args={})
+<<<<<<< HEAD
       fields = [:name, :membership_type, :description, :address, :public_search_listed, :listed, :meeting_day, :meeting_time, :image, :campus, :group_capacity, :area, :department, :leader, :coach, :director, :participants, :group_type, :notification, :interraction_type, :addresses, :childcare_provided, :interaction_type, :leaders, :main_leader, :user_defined_fields]
       options = {"srv" => SRV[__method__]}
       response = self.send_data(options,args)
       # return response
       self.from_api(response["ccb_api"]["response"]["groups"]["group"])
 
+=======
+      options = {"srv" => SRV[__method__]}
+      response = send_data(options,args)
+      self.from_api(response["ccb_api"]["response"]["groups"]["group"])
+>>>>>>> c1a30e60c22f331cfc5daad12bb51cabb9e85a70
     end
   end
 end

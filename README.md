@@ -21,7 +21,7 @@ If you use RVM you may want to create a .rvmrc file:
 rvm use 1.9.3-p194@ccb --create
 ```
 
-Get you gems loaded:
+Get your gems loaded:
 ```
 bundle
 ```

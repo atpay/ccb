@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-class Address
-  def initialize(args={})
-=======
 module CCB
   class Address
   	attr_accessor :type, :street_address, :city, :state, :zip, :country_code, :latitude, :longitude
@@ -30,6 +26,5 @@ module CCB
   	  end
   	  self.new data
   	end
->>>>>>> c1a30e60c22f331cfc5daad12bb51cabb9e85a70
   end
 end

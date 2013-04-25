@@ -1,4 +1,5 @@
 config/ccb.yml
+config/ccb-*.yml
 .rvmrc
 Gemfile.lock
 .rspec

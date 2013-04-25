@@ -12,6 +12,12 @@ module CCB
     base_uri BASE_URI
     basic_auth(CCBAUTH[:username], CCBAUTH[:password])
 
+    def self.send_line(options,data)
+      options = options.collect {|a,b| "#{a}=#{b}"}.join("&")
+      options = options.merge data
+      response = self.post(self.base_uri + "?" + options)
+    end
+
     def self.send_data(options,data)
       options = options.collect {|a,b| "#{a}=#{b}"}.join("&")
       response = self.post(self.base_uri + "?" + options, :body => data )

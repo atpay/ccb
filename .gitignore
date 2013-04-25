@@ -10,3 +10,6 @@ Gemfile.lock
 /spec/tmp/*
 **.orig
 /resources
+/config/ccb-*
+/.ruby-version
+/.ruby-gemset

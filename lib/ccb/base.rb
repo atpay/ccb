@@ -46,6 +46,18 @@ module CCB
       end
     end
 
+    def to_args
+      args = {}
+      self.instance_variables.each do |var|
+        var = var.to_s
+        ignored_atts = %w{@errors @info @changed_attributes @validation_context}
+        next if ignored_atts.include?(var)
+        key = var[1..-1]
+        args[key] = instance_variable_get(var)
+      end
+      return args
+    end
+
     def initialize(args={})
       fields = args.keys
       fields.each do |field_name|

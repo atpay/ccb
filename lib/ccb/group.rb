@@ -10,14 +10,17 @@ module CCB
 
     SRV = {
       :profiles => "group_profiles",
+      :find_by_id => "group_profile_from_id",
       :update => "update_group",
       :create => "create_group"
     } unless defined? SRV
 
     def self.find(args={})
-      case args
-        when :all
+      case
+        when args == :all
           self.profiles
+        when args.keys == [:id]
+          self.find_by_id(args[:id])
         else
           @profiles = self.profiles
           args.each do |k,v|
@@ -26,6 +29,13 @@ module CCB
           @profiles = @profiles[0] if args.keys.any? {|k| k == :id}
           return @profiles
       end
+    end
+
+    def self.find_by_id(id)
+      args = {"srv" => SRV[__method__], "id" => id}
+      fields = []
+
+      response = self.request(args,fields)
     end
 
     def self.profiles(args={})

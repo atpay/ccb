@@ -114,7 +114,7 @@ module CCB
     end
 
     def self.destroy(obj)
-      obj.inactive = "true"
+      obj.inactive = true
       obj.description = obj.description + "\nDeleted Using the API at #{lambda {Time.now}.call}" if obj.respond_to? :description
       obj.save
     end

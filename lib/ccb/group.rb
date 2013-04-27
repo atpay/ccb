@@ -57,23 +57,12 @@ module CCB
       false
     end
 
-    def destroy
-      super
-    end
-
     private
 
     def self.update(obj)
       response = super
       self.from_api(response, "group")
 
-    end
-
-    def self.destroy(obj)
-      # obj.inactive = "true"
-      # obj.description = obj.description + "\nDeleted Using the API at #{lambda {Time.zone.now}.call}"
-      # obj.save
-      super
     end
 
   end # end Group Class

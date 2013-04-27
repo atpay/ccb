@@ -8,6 +8,7 @@ module CCB
       assign_attribute method
     end
 
+    OBJ_TYPE = "group" unless defined? OBJ_TYPE
     SRV = {
       :profiles => "group_profiles",
       :find_by_id => "group_profile_from_id",
@@ -39,7 +40,6 @@ module CCB
     end
 
     def self.profiles(args={})
-      # fields = %w{name area_id childcare meet_day_id meet_time_id department_id type_id udf_pulldown_1_id udf_pulldown_2_id udf_pulldown_3_id limit_records_start limit_records_per_page order_by_1 order_by_2 order_by_3 order_by_1_sort order_by_2_sort order_by_3_sort}.collect(&:to_sym)
       fields = []
       args["srv"] = SRV[__method__]
 
@@ -58,15 +58,22 @@ module CCB
     end
 
     def destroy
-      self.class.destroy(self)
+      super
     end
 
     private
 
+    def self.update(obj)
+      response = super
+      self.from_api(response, "group")
+
+    end
+
     def self.destroy(obj)
-      obj.inactive = "true"
-      obj.description = obj.description + "\nDeleted Using the API at #{lambda {Time.zone.now}.call}"
-      obj.save
+      # obj.inactive = "true"
+      # obj.description = obj.description + "\nDeleted Using the API at #{lambda {Time.zone.now}.call}"
+      # obj.save
+      super
     end
 
   end # end Group Class

@@ -69,28 +69,29 @@ module CCB
     end
 
     def save
-      if valid?
-        if id && created && changed?
-          retval = update
-          @previously_changed = changes
-          @changed_attributes.clear
-          return retval
-        elsif id.nil?
-          @changed_attributes.clear
-          args = {}
-          instance_variables.each do |var|
-            var = var.to_s
-            ignored_atts = %w{@errors @info @changed_attributes @validation_context}
-            next if ignored_atts.include?(var)
-            key = var[1..-1]
-            args[key] = instance_variable_get(var)
-          end
-          @previously_changed = changes
-          @changed_attributes.clear
-          return self.class.create(args)
-        end
-      else
-      end
+      # if valid?
+      #   if id && created && changed?
+      #     retval = update
+      #     @previously_changed = changes
+      #     @changed_attributes.clear
+      #     return retval
+      #   elsif id.nil?
+      #     @changed_attributes.clear
+      #     args = {}
+      #     instance_variables.each do |var|
+      #       var = var.to_s
+      #       ignored_atts = %w{@errors @info @changed_attributes @validation_context}
+      #       next if ignored_atts.include?(var)
+      #       key = var[1..-1]
+      #       args[key] = instance_variable_get(var)
+      #     end
+      #     @previously_changed = changes
+      #     @changed_attributes.clear
+      #     return self.class.create(args)
+      #   end
+      # else
+      # end
+      super
     end
 
     def self.add_position(args)
@@ -181,13 +182,20 @@ module CCB
   private
 
     def update
-      args = {"srv" => SRV[__method__], "individual_id" => self.id}
-      body = {}
-      changes.collect do |k,v|
-        body[k] = v[1]
-      end
-      response = self.class.send_data(args,body)
-      self.class.from_api(response, "individual")
+      # args = {"srv" => SRV[__method__], "individual_id" => self.id}
+      # body = {}
+      # changes.collect do |k,v|
+      #   body[k] = v[1]
+      # end
+      # response = self.class.send_data(args,body)
+      # self.class.from_api(response, "individual")
+      self.class.update(self)
+    end
+
+    def self.update(obj)
+      @options = {"srv" => obj.class::SRV[__method__], "individual_id" => obj.id}
+      response = super
+      self.from_api(response, "individual")
     end
 
   end

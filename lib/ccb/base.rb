@@ -82,7 +82,7 @@ module CCB
     def self.save(obj)
       if obj.valid?
         if obj.id && obj.created && obj.changed?
-          retval = self.update(obj)
+          retval = obj.class.update(obj)
           # obj.previously_changed = obj.changes
           obj.changed_attributes.clear
           return retval
@@ -90,7 +90,7 @@ module CCB
           args = obj.to_args
           # obj.previously_changed = changes
           obj.changed_attributes.clear
-          return self.create(args)
+          return obj.class.create(args)
         end
       else # object is not valid
         raise "#{obj.class.to_s} is not valid"
@@ -106,11 +106,7 @@ module CCB
       end
       response = self.send_data(@options,args)
       # return response
-      if response["ccb_api"]["response"]["success"] == "true"
-        return self.from_api(response)
-      else
-        return response # direct API response
-      end
+      return response # direct API response
     end # method
 
     def destroy
@@ -119,7 +115,7 @@ module CCB
 
     def self.destroy(obj)
       obj.inactive = "true"
-      obj.description = obj.description + "\nDeleted Using the API at #{lambda {Time.zone.now}.call}" if obj.respond_to? :description
+      obj.description = obj.description + "\nDeleted Using the API at #{lambda {Time.now}.call}" if obj.respond_to? :description
       obj.save
     end
 

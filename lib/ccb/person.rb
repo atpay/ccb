@@ -1,8 +1,8 @@
 module CCB
   class Person < CCB::Base
-    attr_accessor :id, :first_name, :last_name, :phone, :email, :street_address, :city, :state, :zip, :info, :image, :family_position, :giving_number, :gender, :birthday, :anniversary, :active, :created, :modified, :receive_email_from_church, :marital_status, :phones, :attendance, :addresses
+    attr_accessor :id, :first_name, :last_name, :phone, :email, :street_address, :city, :state, :zip, :info, :image, :family_position, :giving_number, :gender, :birthday, :anniversary, :active, :created, :modified, :receive_email_from_church, :marital_status, :phones, :attendance, :addresses, :inactive
 
-    tracking_methods = [:first_name, :last_name, :email, :street_address, :city, :state, :zip, :info, :image, :family_position, :giving_number, :gender, :birthday, :anniversary, :active, :receive_email_from_church, :marital_status]
+    tracking_methods = [:first_name, :last_name, :email, :street_address, :city, :state, :zip, :info, :image, :family_position, :giving_number, :gender, :birthday, :anniversary, :active, :receive_email_from_church, :marital_status, :inactive]
     #define_attribute_methods  tracking_methods
     tracking_methods.each do |method|
       assign_attribute method
@@ -30,7 +30,7 @@ module CCB
         addrs = @addresses.dup
         @addresses = []
         addrs.each do |k,addr|
-          puts addr[0].inspect
+          # puts addr[0].inspect
           @addresses << CCB::Address.from_api(addr[0])
         end
       end
@@ -51,7 +51,7 @@ module CCB
     def self.create(args={})
       options = {"srv" => SRV[__method__]}
       response = send_data(options,args)
-      self.from_api(response["ccb_api"]["response"]["individuals"]["individual"])
+      self.from_api(response, "individual")
     end
 
     def full_name
@@ -110,17 +110,17 @@ module CCB
       args = {"srv" => SRV[__method__], "individual_id" => self.id}
       response = self.class.request(args)
       retval = response.instance_variable_get("@groups")["group"].collect do |g|
-        CCB::UserGroup.from_api(g)
+        CCB::UserGroup.from_api(g, "group")
       end
       retval.each {|g| g.user_id = id}
       retval
     end
 
-    def self.destroy(id,confirmation=false)
-      raise "Confirmation must be set to true: destroy(id,true)" unless confirmation == true
-      args = {"individual_id" => id}
-      args["srv"] = SRV[__method__]
+    def self.destroy(obj)
+      # raise "Confirmation must be set to true: destroy(id,true)" unless confirmation == true
+      args = {"srv" => SRV[__method__], "individual_id" => obj.id}
       puts args.inspect
+      puts "This method is not working as expected. No debug data. Need to test on a real/live system" 
       response = self.request(args)
 
     end
@@ -187,7 +187,7 @@ module CCB
         body[k] = v[1]
       end
       response = self.class.send_data(args,body)
-      self.class.from_api(response["ccb_api"]["response"]["individuals"]["individual"])
+      self.class.from_api(response, "individual")
     end
 
   end

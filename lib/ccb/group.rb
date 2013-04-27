@@ -61,56 +61,13 @@ module CCB
       self.class.destroy(self)
     end
 
-    def save
-      self.class.save(self)
-    end
-
     private
-
-    def self.save(obj)
-      if obj.valid?
-        if obj.id && obj.created && obj.changed?
-          retval = self.update(obj)
-          # binding.pry
-          # obj.previously_changed = obj.changes
-          obj.changed_attributes.clear
-          return retval
-        elsif obj.id.nil?
-          obj.changed_attributes.clear
-          args = obj.to_args
-          # obj.previously_changed = changes
-          obj.changed_attributes.clear
-          return self.create(args)
-        end
-      else # object is not valid
-        raise "#{obj.class.to_s} is not valid"
-      end # if valid condition
-    end # method
 
     def self.destroy(obj)
       obj.inactive = "true"
       obj.description = obj.description + "\nDeleted Using the API at #{lambda {Time.zone.now}.call}"
       obj.save
     end
-
-    def self.update(args={})
-      unless args.is_a? Hash
-        obj = args.dup
-        args = {}
-        obj.changes.each do |k,v|
-          args[k] = v[1]
-        end
-        args[:id] = obj.id
-      end
-      options = {"srv" => SRV[__method__], "id" => args.delete(:id)}
-      response = self.send_data(options,args)
-      # return response
-      if response["ccb_api"]["response"]["success"] == "true"
-        return self.from_api(response["ccb_api"]["response"]["groups"]["group"])
-      else
-        return response # direct API response
-      end
-    end # method
 
   end # end Group Class
 end # end CCB module container

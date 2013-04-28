@@ -6,4 +6,9 @@ describe CCB::Person do
     assert_equal true, CCB::Person.ancestors.include?(CCB::Base)
   end
 
+  it "can make a full name" do
+    person = CCB::Person.new(:first_name => "Hello", :last_name => "World")
+    assert person.full_name == "Hello World"
+  end
+
 end

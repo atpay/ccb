@@ -55,7 +55,12 @@ module CCB
     end
 
     def full_name
-      first_name + " " + last_name
+      if (first_name != nil && last_name != nil)
+        retVal = first_name + " " + last_name
+      else
+        raise "First name and Last name must be set in order for this value to be created"
+      end
+      return retVal
     end
 
     def attendance

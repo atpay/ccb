@@ -10,3 +10,8 @@ group :test do
   gem 'turn'
   gem 'rake'
 end
+
+group :development do
+  gem 'guard'
+  gem 'guard-minitest'
+end

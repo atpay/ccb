@@ -11,4 +11,9 @@ describe CCB::Person do
     assert person.full_name == "Hello World"
   end
 
+  it "must raise exception when no full name is possible" do
+    person = CCB::Person.new()
+    lambda {person.full_name}.must_raise(RuntimeError)
+  end
+
 end

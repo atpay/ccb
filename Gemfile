@@ -3,12 +3,13 @@ source 'https://rubygems.org'
 gem 'httparty'
 gem 'activesupport'
 gem 'activemodel'
+gem 'rake'
 
 group :test do
-  gem 'webmock'
-  gem 'vcr'
-  gem 'turn'
-  gem 'rake'
+  gem 'minitest'
+#  gem 'webmock'
+#  gem 'vcr'
+ gem 'turn'
 end
 
 group :development do

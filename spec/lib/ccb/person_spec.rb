@@ -15,5 +15,9 @@ describe CCB::Person do
     person = CCB::Person.new()
     lambda {person.full_name}.must_raise(RuntimeError)
   end
+   it "must always get something from api even with bad credentials" do
+    users = CCB::Person.find(:all)
+    users.wont_be_nil
+  end
 
 end

@@ -9,7 +9,7 @@ group :test do
   gem 'minitest'
 #  gem 'webmock'
 #  gem 'vcr'
- gem 'turn'
+ gem 'turn', :require => false
 end
 
 group :development do

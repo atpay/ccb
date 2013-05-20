@@ -1,4 +1,5 @@
 require_relative '../lib/ccb'
+require 'minitest/spec'
 require 'minitest/autorun'
 # require 'webmock/minitest'
 # require 'vcr'

@@ -1,5 +1,5 @@
 require './lib/ccb/person.rb'
-module CCB
+class CCB
   class Person::Attendance < CCB::Base
     attr_accessor :event, :group, :occurence, :name, :person_id, :attendance
 

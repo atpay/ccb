@@ -1,4 +1,4 @@
-module CCB
+class CCB
   class Ability < CCB::Base
     attr_accessor :id, :name, :order
 

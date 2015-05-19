@@ -1,4 +1,4 @@
-module CCB
+class CCB
   class Address
   	attr_accessor :type, :street_address, :city, :state, :zip, :country_code, :latitude, :longitude
 
@@ -7,7 +7,7 @@ module CCB
   	  args.each do |k,v|
   	  	send(:instance_variable_set, "@#{k}", v) if respond_to? k
   	  end
-  	  @country = CCB::Country.from_api(@country) if @country && !@country.is_a?(String)
+  	  @country = CCB::Country.from_api(@country, "Country") if @country && !@country.is_a?(String)
   	end
 
     def line1

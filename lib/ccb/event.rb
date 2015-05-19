@@ -1,4 +1,4 @@
-module CCB
+class CCB
   class Event < CCB::Base
     attr_accessor :id, :name, :start_datetime, :start_date,
       :leader_notes, :start_time, :end_date, :end_time, :timezone,

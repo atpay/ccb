@@ -1,5 +1,6 @@
-module CCB
+class CCB
   class Person < CCB::Base
+    OBJ_TYPE = "Person" unless defined? OBJ_TYPE
     attr_accessor :id, :first_name, :last_name, :phone, :email, :street_address, :city, :state, :zip, :info, :image, :family_position, :giving_number, :gender, :birthday, :anniversary, :active, :created, :modified, :receive_email_from_church, :marital_status, :phones, :attendance, :addresses, :inactive
 
     tracking_methods = [:first_name, :last_name, :email, :street_address, :city, :state, :zip, :info, :image, :family_position, :giving_number, :gender, :birthday, :anniversary, :active, :receive_email_from_church, :marital_status, :inactive]
@@ -31,7 +32,7 @@ module CCB
         @addresses = []
         addrs.each do |k,addr|
           # puts addr[0].inspect
-          @addresses << CCB::Address.from_api(addr[0])
+          # @addresses << CCB::Address.from_api(addr[0], "Address")
         end
       end
     end
@@ -41,17 +42,17 @@ module CCB
     end
 
     def self.merged_profiles(args={})
-      svc = {"srv" => SRV[__method__]}
-      args = args.merge svc
-      response = request(args)
-      #self.from_api(response["ccb_api"]["response"]["individuals"]["individual"])
-      return response
+      # svc = {"srv" => SRV[__method__]}
+      # args = args.merge svc
+      # response = request(args) rescue nil
+      # #self.from_api(response["ccb_api"]["response"]["individuals"]["individual"])
+      # return response
     end
 
     def self.create(args={})
       options = {"srv" => SRV[__method__]}
       response = send_data(options,args)
-      self.from_api(response, "individual")
+      # self.from_api(response, "individual")
     end
 
     def full_name
@@ -65,8 +66,8 @@ module CCB
 
     def attendance
       args = {"srv" => SRV[__method__], "individual_id" => self.id}
-      response = CCB::Person::Attendance.request(args)
-      retval = response
+      # response = CCB::Person::Attendance.request(args) rescue nil
+      # retval = response
     end
 
     def persisted?
@@ -108,15 +109,15 @@ module CCB
     end
 
     def add_position(position_id)
-      position_id = position_id.id if position_id.is_a?(CCB::Position)
-      self.class.add_position(:person_id => self.id, :position_id => position_id)
+      # position_id = position_id.id if position_id.is_a?(CCB::Position)
+      # self.class.add_position(:person_id => self.id, :position_id => position_id)
     end
 
     def groups
       args = {"srv" => SRV[__method__], "individual_id" => self.id}
-      response = self.class.request(args)
+      response = self.class.request(args) rescue nil
       retval = response.instance_variable_get("@groups")["group"].collect do |g|
-        CCB::UserGroup.from_api(g, "group")
+        # CCB::UserGroup.from_api(g, "Group")
       end
       retval.each {|g| g.user_id = id}
       retval
@@ -126,8 +127,8 @@ module CCB
       # raise "Confirmation must be set to true: destroy(id,true)" unless confirmation == true
       args = {"srv" => SRV[__method__], "individual_id" => obj.id}
       puts args.inspect
-      puts "This method is not working as expected. No debug data. Need to test on a real/live system" 
-      response = self.request(args)
+      puts "This method is not working as expected. No debug data. Need to test on a real/live system"
+      response = self.request(args) rescue nil
 
     end
 
@@ -136,8 +137,8 @@ module CCB
       args[:login] = args.delete :username
       args["srv"] = SRV[__method__]
       if args[:login] && args[:password]
-        response = self.request(args)
-        return self.from_id(response.id)
+        response = self.request(args) rescue nil
+        return self.from_id(connection, response.id)
       else
         return nil
       end
@@ -146,14 +147,15 @@ module CCB
 
     def self.all(since=nil)
       args = {"srv" => SRV[__method__]}
-      response = self.request(args)
+      response = self.request(args) rescue nil
     end
 
-    def self.find(args={})
+    # def self.find(args={})
+    def self.find( connection, args = {}, filters = {} )
       if args.is_a?(Symbol) && args == :all
         return self.all
       elsif args.is_a?(Hash) && args[:id]
-        return self.from_id(args[:id])
+        return self.from_id(connection, args[:id])
       elsif args.is_a?(Hash) && (args[:routing_number] || args[:account_number])
         return self.from_micr(args)
       else
@@ -165,23 +167,25 @@ module CCB
       fields = %w{routing_number account_number}.collect(&:to_sym)
       raise "Please include both of #{fields.join(', ')}" unless [args.keys].flatten.sort == fields.sort
       args["srv"] = SRV[__method__]
-      response = self.request(args, fields)
+      response = self.request(args, fields) rescue nil
     end
 
     def self.search(args={})
       fields = %w{first_name last_name phone email street_address city state zip}.collect(&:to_sym)
       raise "Please include one of #{fields.join(', ')}" if args.keys.empty?
       args["srv"] = SRV[__method__]
-      response = self.request(args, fields)
+      # response = self.request(connection, args, fields)
+      response = connection.get(args, fields, OBJ_TYPE)
     end
 
-    def self.from_id(id)
+    def self.from_id(connection, id)
       fields = %w{id}
       id = id.to_s
       args = {}
       args["srv"] = SRV[__method__]
       args["individual_id"] = id
-      response = self.request(args, fields)
+      # response = self.request(args, fields)
+      response = connection.get(args, fields, OBJ_TYPE)
     end
 
   private
@@ -200,7 +204,7 @@ module CCB
     def self.update(obj)
       @options = {"srv" => obj.class::SRV[__method__], "individual_id" => obj.id}
       response = super
-      self.from_api(response, "individual")
+      # self.from_api(response, "Individual")
     end
 
   end

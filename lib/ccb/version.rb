@@ -1,3 +1,3 @@
-module Ccb
-  VERSION = "0.0.1"
+class CCB
+  VERSION = "0.0.1" unless defined? VERSION
 end

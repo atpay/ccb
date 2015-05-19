@@ -1,4 +1,4 @@
-module CCB
+class CCB
 	class HelperMethod
 		def self.string_attribute(value)
 			puts value.inspect

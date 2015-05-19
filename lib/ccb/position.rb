@@ -1,4 +1,4 @@
-module CCB
+class CCB
   class Position < CCB::Base
   	attr_accessor :id, :name, :description, :listed, :scheduled, :owner, :creator, :created, :modified, :position_type, :campus, :group_id, :maximum_limit, :filling_currently, :inactive, :group_name, :modifier, :participants
     #tracking_methods = [:first_name, :last_name, :email, :street_address, :city, :state, :zip, :info, :image, :family_position, :giving_number, :gender, :birthday, :anniversary, :active, :receive_email_from_church, :marital_status]

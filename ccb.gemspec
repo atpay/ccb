@@ -5,7 +5,7 @@ require 'ccb/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "ccb"
-  spec.version       = Ccb::VERSION
+  spec.version       = CCB::VERSION
   spec.authors       = ["Ben Hamilton"]
   spec.email         = ["ben.hamilton@nwcfoursquare.org"]
   spec.summary       = %q{TODO: Write a short summary. Required.}
@@ -15,10 +15,12 @@ Gem::Specification.new do |spec|
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.test_files    = spec.files.grep(%r{^(test|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'httparty'
+  spec.add_runtime_dependency 'faraday'
+  # spec.add_runtime_dependency 'faraday-cookie_jar'
+  spec.add_runtime_dependency 'json'
   spec.add_runtime_dependency 'activesupport'
   spec.add_runtime_dependency 'activemodel'
 
@@ -26,10 +28,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.4'
   spec.add_development_dependency 'guard', '~> 2.8'
   spec.add_development_dependency 'guard-minitest', '~> 2.4'
-# gem 'rb-inotify', :require => false
-# gem 'rb-fsevent', :require => false
-# gem 'rb-fchange', :require => false
-# gem 'minitest'
+  spec.add_development_dependency 'rb-inotify'
+  spec.add_development_dependency 'rb-fsevent'
+  spec.add_development_dependency 'rb-fchange'
+  spec.add_development_dependency 'webmock'
+  spec.add_development_dependency 'vcr'
 # gem 'webmock'
 # gem 'vcr'
 

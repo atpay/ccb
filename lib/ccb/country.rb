@@ -1,4 +1,4 @@
-module CCB
+class CCB
   class Country
   	attr_accessor :name, :code
 

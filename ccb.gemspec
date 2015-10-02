@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = CCB::VERSION
   spec.authors       = ["Ben Hamilton"]
   spec.email         = ["ben.hamilton@nwcfoursquare.org"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Write a short summary. Required.}
+  spec.description   = %q{Write a longer description. Optional.}
   spec.homepage      = ""
   spec.license       = "MIT"
 

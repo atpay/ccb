@@ -151,7 +151,7 @@ class CCB
     end
 
     # def self.find(args={})
-    def self.find( connection, args = {}, filters = {} )
+    def self.find(connection, args = {}, filters = {})
       if args.is_a?(Symbol) && args == :all
         return self.all
       elsif args.is_a?(Hash) && args[:id]
@@ -159,7 +159,7 @@ class CCB
       elsif args.is_a?(Hash) && (args[:routing_number] || args[:account_number])
         return self.from_micr(args)
       else
-        return self.search(args)
+        return self.search(connection, args)
       end
     end
 
@@ -170,7 +170,7 @@ class CCB
       response = self.request(args, fields) rescue nil
     end
 
-    def self.search(args={})
+    def self.search(connection, args={})
       fields = %w{first_name last_name phone email street_address city state zip}.collect(&:to_sym)
       raise "Please include one of #{fields.join(', ')}" if args.keys.empty?
       args["srv"] = SRV[__method__]
